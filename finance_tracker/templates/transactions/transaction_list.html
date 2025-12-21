@@ -1,0 +1,196 @@
+{% extends 'base.html' %}
+
+{% block title %}Список транзакций{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <h1 class="mb-4">
+            <i class="bi bi-list-check"></i> Транзакции
+        </h1>
+
+        <!-- Статистика -->
+        <div class="row mb-4">
+            <div class="col-md-4">
+                <div class="stat-card income-card">
+                    <h5><i class="bi bi-arrow-up-circle"></i> Доходы</h5>
+                    <h3>{{ total_income }} ₽</h3>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="stat-card expense-card">
+                    <h5><i class="bi bi-arrow-down-circle"></i> Расходы</h5>
+                    <h3>{{ total_expense }} ₽</h3>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="stat-card balance-card">
+                    <h5><i class="bi bi-calculator"></i> Баланс</h5>
+                    <h3>{{ balance }} ₽</h3>
+                </div>
+            </div>
+        </div>
+
+        <!-- Форма фильтрации -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <i class="bi bi-funnel"></i> Фильтр
+            </div>
+            <div class="card-body">
+                <form method="get" class="row g-3">
+                    <div class="col-md-3">
+                        <label for="id_start_date" class="form-label">С</label>
+                        <input type="date" name="start_date" id="id_start_date" class="form-control"
+                               value="{{ request.GET.start_date }}">
+                    </div>
+                    <div class="col-md-3">
+                        <label for="id_end_date" class="form-label">По</label>
+                        <input type="date" name="end_date" id="id_end_date" class="form-control"
+                               value="{{ request.GET.end_date }}">
+                    </div>
+                    <div class="col-md-4">
+                        <label for="id_category" class="form-label">Категория</label>
+                        <select name="category" id="id_category" class="form-select">
+                            <option value="">Все категории</option>
+                            {% for category in filter_form.category.field.queryset %}
+                                <option value="{{ category.id }}"
+                                    {% if request.GET.category == category.id|stringformat:"s" %}selected{% endif %}>
+                                    {{ category.name }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-md-2 d-flex align-items-end">
+                        <button type="submit" class="btn btn-primary w-100">
+                            <i class="bi bi-search"></i> Применить
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Таблица транзакций -->
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">Список транзакций</h5>
+                <a href="{% url 'transactions:transaction_create' %}" class="btn btn-success btn-sm">
+                    <i class="bi bi-plus-circle"></i> Добавить
+                </a>
+            </div>
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Дата</th>
+                                <th>Категория</th>
+                                <th>Сумма</th>
+                                <th>Счет</th>
+                                <th>Описание</th>
+                                <th>Действия</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for transaction in transactions %}
+                            <tr>
+                                <td>{{ transaction.date|date:"d.m.Y" }}</td>
+                                <td>
+                                    <span class="badge {% if transaction.category.type == 'income' %}bg-success{% else %}bg-danger{% endif %}">
+                                        {{ transaction.category.name }}
+                                    </span>
+                                </td>
+                                <td class="{% if transaction.category.type == 'income' %}text-success{% else %}text-danger{% endif %}">
+                                    <strong>{{ transaction.amount }} ₽</strong>
+                                </td>
+                                <td>{{ transaction.account.name }}</td>
+                                <td>{{ transaction.description|default:"-"|truncatechars:30 }}</td>
+                                <td>
+                                    <div class="btn-group btn-group-sm">
+                                        <a href="{% url 'transactions:transaction_update' transaction.pk %}"
+                                           class="btn btn-outline-primary">
+                                            <i class="bi bi-pencil"></i>
+                                        </a>
+                                        <a href="{% url 'transactions:transaction_delete' transaction.pk %}"
+                                           class="btn btn-outline-danger">
+                                            <i class="bi bi-trash"></i>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="6" class="text-center py-4">
+                                    <i class="bi bi-info-circle"></i> Нет транзакций.
+                                    <a href="{% url 'transactions:transaction_create' %}">Создайте первую!</a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Пагинация -->
+            {% if is_paginated %}
+            <div class="card-footer">
+                <nav>
+                    <ul class="pagination justify-content-center mb-0">
+                        {% if page_obj.has_previous %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ page_obj.previous_page_number }}{% for key, value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}">
+                                    Назад
+                                </a>
+                            </li>
+                        {% endif %}
+
+                        {% for num in page_obj.paginator.page_range %}
+                            {% if page_obj.number == num %}
+                                <li class="page-item active">
+                                    <span class="page-link">{{ num }}</span>
+                                </li>
+                            {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                                <li class="page-item">
+                                    <a class="page-link" href="?page={{ num }}{% for key, value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}">
+                                        {{ num }}
+                                    </a>
+                                </li>
+                            {% endif %}
+                        {% endfor %}
+
+                        {% if page_obj.has_next %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ page_obj.next_page_number }}{% for key, value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}">
+                                    Вперед
+                                </a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </nav>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Автоматическая установка дат
+    document.addEventListener('DOMContentLoaded', function() {
+        // Устанавливаем начальную дату - 30 дней назад
+        const startDateInput = document.getElementById('id_start_date');
+        const endDateInput = document.getElementById('id_end_date');
+
+        if (startDateInput && !startDateInput.value) {
+            const startDate = new Date();
+            startDate.setDate(startDate.getDate() - 30);
+            startDateInput.valueAsDate = startDate;
+        }
+
+        // Устанавливаем конечную дату - сегодня
+        if (endDateInput && !endDateInput.value) {
+            endDateInput.valueAsDate = new Date();
+        }
+    });
+</script>
+{% endblock %}
