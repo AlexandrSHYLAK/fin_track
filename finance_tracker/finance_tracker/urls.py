@@ -22,5 +22,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('transactions/', include('transactions.urls')),
     path('categories/', include('categories.urls')),
+    path('users/', include('users.urls')),
     path('', RedirectView.as_view(pattern_name='transactions:transaction_list', permanent=False)),
 ]

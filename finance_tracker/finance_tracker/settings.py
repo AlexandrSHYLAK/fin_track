@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'transactions',
     'accounts',
     'categories',
+    'users',
 ]
 
 MIDDLEWARE = [
@@ -123,3 +124,7 @@ STATIC_URL = 'static/'
 LOGIN_URL = '/admin/login/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+LOGIN_URL = 'users:login'
+LOGIN_REDIRECT_URL = 'transactions:transaction_list'
+LOGOUT_REDIRECT_URL = 'users:login'
