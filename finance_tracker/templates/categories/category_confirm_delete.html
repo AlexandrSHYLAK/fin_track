@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+
+{% block title %}Удаление категории{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header bg-danger text-white">
+                <h4 class="mb-0">
+                    <i class="bi bi-exclamation-triangle"></i> Подтверждение удаления
+                </h4>
+            </div>
+
+            <div class="card-body">
+                <p>Вы уверены, что хотите удалить категорию <strong>"{{ object.name }}"</strong>?</p>
+
+                {% if object.transaction_set.exists %}
+                <div class="alert alert-warning">
+                    <i class="bi bi-exclamation-triangle"></i>
+                    Внимание! Эта категория используется в <strong>{{ object.transaction_set.count }}</strong> транзакциях.
+                    При удалении все связанные транзакции будут переназначены на выбранную вами категорию.
+
+                    <div class="mt-3">
+                        <label for="new_category" class="form-label">Выберите новую категорию:</label>
+                        <select name="new_category_id" id="new_category" class="form-select" required>
+                            <option value="">Выберите категорию...</option>
+                            {% for cat in categories %}
+                                {% if cat.id != object.id %}
+                                <option value="{{ cat.id }}">{{ cat.name }} ({{ cat.get_type_display }})</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                {% else %}
+                <div class="alert alert-info">
+                    <i class="bi bi-info-circle"></i>
+                    Эта категория не используется ни в одной транзакции.
+                </div>
+                {% endif %}
+
+                <form method="post">
+                    {% csrf_token %}
+
+                    <div class="d-flex justify-content-between">
+                        <a href="{% url 'categories:category_list' %}" class="btn btn-secondary">
+                            <i class="bi bi-arrow-left"></i> Отмена
+                        </a>
+                        <button type="submit" class="btn btn-danger">
+                            <i class="bi bi-trash"></i> Удалить
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% if object.transaction_set.exists %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.querySelector('form');
+        const select = document.getElementById('new_category');
+
+        form.addEventListener('submit', function(e) {
+            if (!select.value) {
+                e.preventDefault();
+                alert('Пожалуйста, выберите новую категорию для транзакций.');
+                select.focus();
+                return false;
+            }
+
+            if (!confirm('Вы уверены, что хотите удалить категорию? Все транзакции будут переназначены.')) {
+                e.preventDefault();
+                return false;
+            }
+
+            return true;
+        });
+    });
+</script>
+{% endif %}
+{% endblock %}

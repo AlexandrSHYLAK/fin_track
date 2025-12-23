@@ -38,6 +38,7 @@ class Account(models.Model):
 
     def update_balance(self):
         """Обновляет баланс счета на основе всех транзакций"""
+        # Ленивый импорт для избежания циклической зависимости
         from transactions.models import Transaction
 
         total = Transaction.objects.filter(

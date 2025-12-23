@@ -56,6 +56,11 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav me-auto">
                     <li class="nav-item">
+                        <a class="nav-link" href="{% url 'categories:category_list' %}">
+                            <i class="bi bi-tags"></i> Категории
+                        </a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link" href="{% url 'transactions:transaction_list' %}">
                             <i class="bi bi-list"></i> Транзакции
                         </a>

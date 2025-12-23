@@ -61,3 +61,12 @@ class Transaction(models.Model):
 
     def get_absolute_url(self):
         return reverse('transactions:transaction_list')
+
+    def save(self, *args, **kwargs):
+        is_new = self.pk is None
+        super().save(*args, **kwargs)
+
+        # Обновляем баланс счета только если это новая транзакция
+        # или изменилась сумма или счет
+        if is_new:
+            self.account.update_balance()
