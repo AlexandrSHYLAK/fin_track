@@ -150,3 +150,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LOGIN_URL = 'users:login'
 LOGIN_REDIRECT_URL = 'transactions:transaction_list'
 LOGOUT_REDIRECT_URL = 'users:login'
+
+
+ALLOWED_HOSTS = ["l2tvzxvj-django-fin-track.apps-6.websson.cloud"]
+CSRF_TRUSTED_ORIGINS = ["https://l2tvzxvj-django-fin-track.apps-6.websson.cloud"]
