@@ -1,0 +1,26 @@
+argon2-cffi @ file:///home/conda/feedstock_root/build_artifacts/argon2-cffi_1749017159514/work
+argon2-cffi-bindings @ file:///home/conda/feedstock_root/build_artifacts/argon2-cffi-bindings_1789743274061/work
+asgiref @ file:///home/conda/feedstock_root/build_artifacts/bld/rattler-build_asgiref_hc364b38_1793489734/work
+boto3 @ file:///home/conda/feedstock_root/build_artifacts/boto3_1794339069197/work
+botocore @ file:///home/conda/feedstock_root/build_artifacts/botocore_1794324806459/work
+certifi @ file:///home/conda/feedstock_root/build_artifacts/certifi_1793720052803/work/certifi
+cffi @ file:///home/conda/feedstock_root/build_artifacts/cffi_1788485198568/work
+Django @ file:///home/conda/feedstock_root/build_artifacts/bld/rattler-build_django_hc364b38_1793738974/work
+gunicorn @ file:///home/conda/feedstock_root/build_artifacts/gunicorn_1794566680988/work
+jmespath @ file:///home/conda/feedstock_root/build_artifacts/bld/rattler-build_jmespath_1769161799/work
+minio @ file:///home/conda/feedstock_root/build_artifacts/minio_1764207534654/work
+packaging @ file:///home/conda/feedstock_root/build_artifacts/bld/rattler-build_packaging_1785888127/work
+paho-mqtt @ file:///home/conda/feedstock_root/build_artifacts/bld/rattler-build_paho-mqtt_h5ded981_1793873287/work
+pika @ file:///home/conda/feedstock_root/build_artifacts/bld/rattler-build_pika_1790689579/work
+pillow==13.0.0
+psycopg==3.3.9
+pycparser @ file:///home/conda/feedstock_root/build_artifacts/bld/rattler-build_pycparser_1792687210/work
+pycryptodome @ file:///home/conda/feedstock_root/build_artifacts/bld/rattler-build_pycryptodome_hd42f317_1794121929/work
+python-dateutil @ file:///home/conda/feedstock_root/build_artifacts/bld/rattler-build_python-dateutil_1751104122/work
+s3transfer @ file:///home/conda/feedstock_root/build_artifacts/bld/rattler-build_s3transfer_1792497265/work
+setuptools==84.2.1
+six @ file:///home/conda/feedstock_root/build_artifacts/bld/rattler-build_six_1753199211/work
+sqlparse @ file:///home/conda/feedstock_root/build_artifacts/bld/rattler-build_sqlparse_h5ded981_1793615318/work
+supervisor @ file:///home/conda/feedstock_root/build_artifacts/bld/rattler-build_supervisor_1772209224/work
+typing_extensions @ file:///home/conda/feedstock_root/build_artifacts/bld/rattler-build_typing_extensions_1783002732/work
+urllib3 @ file:///home/conda/feedstock_root/build_artifacts/bld/rattler-build_urllib3_h5ded981_1794575230/work
