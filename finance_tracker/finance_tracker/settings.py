@@ -100,10 +100,10 @@ SECURE_PROXY_SSL_HEADER = (
     "https"
 )
 
-CSRF_TRUSTED_ORIGINS = (
-    [os.environ["UPPCODER_SELF_URL"]]
-    if os.environ.get("UPPCODER_SELF_URL")
-    else []
+# CSRF_TRUSTED_ORIGINS = (
+#     [os.environ["UPPCODER_SELF_URL"]]
+#     if os.environ.get("UPPCODER_SELF_URL")
+#     else []
 )
 
 # Password validation
